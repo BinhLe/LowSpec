@@ -1,0 +1,100 @@
+1) IdealPointCompetition:
+	This is the combination between LandedPrice and ShippingTime_maxHours, computed for each offer, in each competition.
+	The formula is the difference between the ideal point in that competition (product of minimum landed price and minimum shiptime maxhours) 
+	and the same product combination for each offer in that competition.
+
+	E.g. For one competition (one xml file) we have data as follows
+	
+			IsBuyBoxWinner  MarketplaceId   ProductId        SellerId  ListingPrice  ShippingPrice	ShippingTime_maxHours  LandedPrice		IdealPointCompetition 		...
+			-1  			ATVPDKIKX0DER  B002PEXC40  A3MWKKOMH9JCOC          58.5           0.00                      0         58.5    				   	a1    		...
+			-1  			ATVPDKIKX0DER  B002PEXC40   AAGBRFV9S6RF9          58.5           0.00                      0         58.5     					a2    		...
+			-1  			ATVPDKIKX0DER  B002PEXC40   AAGBRFV9S6RF9          58.5           0.00                     48         58.5    					a3    		...
+			-1  			ATVPDKIKX0DER  B002PEXC40  A3RTF4R4P8C9DK          58.5           0.00                      0         58.5     					a4    		...
+			 1  			ATVPDKIKX0DER  B002PEXC40  ATVPDKIKX0DER           58.5           0.00                      0         58.5     					a5    		...
+			-1  			ATVPDKIKX0DER  B002PEXC40  A20OGRGQG17CVN          69.0           9.99                    120         78.99     				a6    		...
+				
+		We have:
+		Minimum(LandedPrice) = 58.5
+		Minimum(ShippingTime_maxHours) = 0
+		
+		the computation of "IdealPointCompetition" column will be:
+			a1 = (Minimum(LandedPrice)*Minimum(ShippingTime_maxHours)) - (58.5*0) 		= 0
+			a2 = (Minimum(LandedPrice)*Minimum(ShippingTime_maxHours)) - (58.5*0) 		= 0
+			a3 = (Minimum(LandedPrice)*Minimum(ShippingTime_maxHours)) - (58.5*48) 		= -2808
+			a4 = (Minimum(LandedPrice)*Minimum(ShippingTime_maxHours)) - (58.5*0) 		= 0
+			a5 = (Minimum(LandedPrice)*Minimum(ShippingTime_maxHours)) - (58.5*0) 		= 0
+			a6 = (Minimum(LandedPrice)*Minimum(ShippingTime_maxHours)) - (78.99*120) 	= -9478.8
+
+----------------------------------------------------------------------------------------------------------------------------------------------
+
+2) DifftoMinLandedPriceProduct
+	Difference from current landedprice to the minimum landed price, grouped by product.
+	
+	E.g. For one competition (one xml file) we have data as follows
+	
+			IsBuyBoxWinner  MarketplaceId   ProductId        SellerId  ListingPrice  ShippingPrice	ShippingTime_maxHours  LandedPrice		DifftoMinLandedPriceProduct		...
+			-1  			ATVPDKIKX0DER  B002PEXC40  A3MWKKOMH9JCOC          58.5           0.00                      0         58.5    					b1				...
+			-1  			ATVPDKIKX0DER  B002PEXC40   AAGBRFV9S6RF9          58.5           0.00                      0         58.5     					b2				...
+			-1  			ATVPDKIKX0DER  B002PEXC40   AAGBRFV9S6RF9          58.5           0.00                     48         58.5    					b3				...
+			-1  			ATVPDKIKX0DER  B002PEXC40  A3RTF4R4P8C9DK          58.5           0.00                      0         58.5     					b4				...
+			 1  			ATVPDKIKX0DER  B002PEXC40  ATVPDKIKX0DER           58.5           0.00                      0         58.5     					b5				...
+			-1  			ATVPDKIKX0DER  B002PEXC40  A20OGRGQG17CVN          69.0           9.99                    120         78.99     				b6				...
+	
+		We search in marketplace "ATVPDKIKX0DER" with product "B002PEXC40" and find the minimum landedprice of that product is 55.69
+		So, the "DifftoMinLandedPriceProduct" will be calculated as follows:
+			b1 = 58.5 - 55.69 = 2.81
+			b2 = 58.5 - 55.69 = 2.81
+			b3 = 58.5 - 55.69 = 2.81
+			b4 = 58.5 - 55.69 = 2.81
+			b5 = 58.5 - 55.69 = 2.81
+			b6 = 78.99 - 55.69 = 23.3
+		
+----------------------------------------------------------------------------------------------------------------------------------------------
+3) DifftoMinLandedPriceCompetition
+	Difference from current landedprice to the minimum landed price in that competition.
+
+	E.g. For one competition (one xml file) we have data as follows
+	
+			IsBuyBoxWinner  MarketplaceId   ProductId        SellerId  ListingPrice  ShippingPrice	ShippingTime_maxHours  LandedPrice		DifftoMinLandedPriceCompetition		...
+			-1  			ATVPDKIKX0DER  B002PEXC40  A3MWKKOMH9JCOC          58.5           0.00                      0         58.5    					c1					...
+			-1  			ATVPDKIKX0DER  B002PEXC40   AAGBRFV9S6RF9          58.5           0.00                      0         58.5     					c2					...
+			-1  			ATVPDKIKX0DER  B002PEXC40   AAGBRFV9S6RF9          58.5           0.00                     48         58.5    					c3					...
+			-1  			ATVPDKIKX0DER  B002PEXC40  A3RTF4R4P8C9DK          58.5           0.00                      0         58.5     					c4					...
+			 1  			ATVPDKIKX0DER  B002PEXC40  ATVPDKIKX0DER           58.5           0.00                      0         58.5     					c5					...
+			-1  			ATVPDKIKX0DER  B002PEXC40  A20OGRGQG17CVN          69.0           9.99                    120         78.99     				c6					...
+			
+		We have the Minimum(LandedPrice) = 58.5
+		the computation of "DifftoMinLandedPriceCompetition" column will be:
+			c1 = 58.5 	- Minimum(LandedPrice) 	= 0
+			c2 = 58.5 	- Minimum(LandedPrice)	= 0
+			c3 = 58.5 	- Minimum(LandedPrice)	= 0
+			c4 = 58.5 	- Minimum(LandedPrice)	= 0
+			c5 = 58.5 	- Minimum(LandedPrice)	= 0
+			c6 = 78.99 	- Minimum(LandedPrice) 	= 20.49
+			
+----------------------------------------------------------------------------------------------------------------------------------------------
+
+4) ShippingTime_maxHours
+	Max time for shipping.
+
+----------------------------------------------------------------------------------------------------------------------------------------------	
+	
+5) CompeteAmzCompetition 
+	1 if it compete to Amazon's Seller, 0 if it is Amazon's Seller, -1 otherwise
+	E.g.	For one competition (one xml file) we have data as follows
+	
+			IsBuyBoxWinner  MarketplaceId   ProductId        SellerId  ListingPrice  ShippingPrice	ShippingTime_maxHours  LandedPrice		CompeteAmzCompetition		...
+			-1  			ATVPDKIKX0DER  B002PEXC40  A3MWKKOMH9JCOC          58.5           0.00                      0         58.5    					d1					...
+			-1  			ATVPDKIKX0DER  B002PEXC40   AAGBRFV9S6RF9          58.5           0.00                      0         58.5     					d2					...
+			-1  			ATVPDKIKX0DER  B002PEXC40   AAGBRFV9S6RF9          58.5           0.00                     48         58.5    					d3					...
+			-1  			ATVPDKIKX0DER  B002PEXC40  A3RTF4R4P8C9DK          58.5           0.00                      0         58.5     					d4					...
+			 1  			ATVPDKIKX0DER  B002PEXC40  ATVPDKIKX0DER           58.5           0.00                      0         58.5     					d5					...
+			-1  			ATVPDKIKX0DER  B002PEXC40  A20OGRGQG17CVN          69.0           9.99                    120         78.99     				d6					...
+			
+	We have the Amazon's SellerId for in this U.S. market is 'ATVPDKIKX0DER', so the "CompeteAmzCompetition" will be:
+		d1 = 1
+		d2 = 1
+		d3 = 1
+		d4 = 1
+		d5 = 0
+		d6 = 1
