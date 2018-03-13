@@ -1,0 +1,51 @@
+xgboost 0.7.post3
+Download
+xgboost-0.7.post3.tar.gz
+XGBoost Python Package
+
+
+Notes
+Windows users: pip installation may not work on some Windows environments, and it may cause unexpected errors.
+
+Installation from pip on Windows is therefore currently disabled for further investigation; please install from Github instead.
+
+If you want to run XGBoost process in parallel using the fork backend for joblib/multiprocessing, you must build XGBoost without support for OpenMP by make no_omp=1. Otherwise, use the forkserver (in Python 3.4) or spawn backend. See the sklearn_parallel.py demo.
+
+Requirements
+Since this package contains C++ source code, pip needs a C++ compiler from the system to compile the source code on-the-fly.
+
+macOS
+On macOS, gcc@5 is required as later versions remove support for OpenMP. See here for more info.
+
+Please install gcc@5 from Homebrew:
+
+brew install gcc@5
+Linux
+Please install gcc:
+
+sudo apt-get install build-essential      # Ubuntu/Debian
+sudo yum groupinstall 'Development Tools' # CentOS/RHEL
+Installation
+From PyPI
+For a stable version, install using pip:
+
+pip install xgboost
+From source
+For an up-to-date version, install from Github:
+
+Run ./build.sh in the root of the repo.
+
+Make sure you have setuptools installed: pip install setuptools
+
+Install with cd python-package; python setup.py install from the root of the repo
+
+For Windows users, please use the Visual Studio project file under the Windows folder. See also the installation tutorial from Kaggle Otto Forum.
+
+Add MinGW to the system PATH in Windows if you are using the latest version of xgboost which requires compilation:
+
+python
+import os
+os.environ['PATH'] = os.environ['PATH'] + ';C:\\Program Files\\mingw-w64\\x86_64-5.3.0-posix-seh-rt_v4-rev0\\mingw64\\bin'
+Examples
+Refer also to the walk through example in demo folder.
+See also the example scripts for Kaggle Higgs Challenge, including speedtest script on this dataset.
