@@ -1,0 +1,113 @@
+%!TEX root = main.tex
+\section{Introduction}
+\label{sec:introduction}
+
+%% Begin the state (edited)	
+Nowadays, the rise of e-commerce has opened many opportunities and challenges 
+for merchants to sell their products and re-act their selling immediately. 
+The on-line marketplace such as Amazon, provide many supporting tools to sellers 
+that they can supervise their products at any given point of time. 
+On the one hand, Amazon helps the merchants to adapt their product's 
+price effectively in order to gain their profit. On the other hand, it also increases 
+much pressures to the retailers, who have limited experience with such highly
+competitive markets and their long-term effects. To deal with that concern, the sellers 
+use dynamic pricing tools to adjust product prices and manage inventories in real-time. 
+
+%% What is Dynamic pricing
+Dynamic pricing is the study of determining optimal selling prices 
+of products or services, in a setting where prices can easily and 
+frequently be adjusted. This applies to vendors selling their 
+products via Internet, or to brick-and-mortar stores that make use 
+of digital price tags. In both cases, digital technology has made it 
+possible to continuously adjust prices to changing circumstances, 
+without any costs or efforts. Dynamic pricing techniques are nowadays 
+widely used in various businesses, and in some cases considered to be 
+an indispensable part of pricing policies. Digital sales environments 
+generally provide firms with an abundance of sales data.
+
+%% Talk about the key points
+This data may contain important insights on consumer behavior, in 
+particular on how consumers respond to different selling prices. 
+Exploiting the knowledge contained in the data and applying this to 
+dynamic pricing policies may provide key competitive advantages, 
+and knowledge of how this should be done is of highly practical relevance 
+and theoretical interest. This consideration is a main driver of 
+research on dynamic pricing and learning: the study of optimal 
+dynamic pricing in an uncertain environment where characteristics 
+of consumer behavior can be learned from accumulating sales data. 
+
+%% What is challenging?
+More recently, research and industry started to combine
+achievements of price optimization from the research field
+of operations research with the achievements in data-driven
+procedures from the field of computer science such as machine
+learning. This development is basically catching-up
+with similar approaches already being applied in the field
+of algorithmic trading or high-frequency trading on stock
+exchanges. These approaches are far more sophisticated than
+currently observable approaches on marketplaces such as
+Amazon, where most merchants thrive to be amongst the
+cheapest competitors, eventually leading to a typical race to the
+bottom. 
+%More sophisticated strategies optimize for long-term
+%profits, consider restocking, and predict competitor actions.
+%Unfortunately, for practitioners as well as for researchers,
+%a common platform to develop, test, and evaluate pricing
+%strategies is missing. Merchants lack the possibility to test
+%their strategies appropriately before deploying them in production,
+%potentially causing significant economic problems. For
+%researchers, there are no open platforms for simulating large
+%pricing competitions with various pricing strategies competing
+%with each other. More importantly, there are no platforms that
+%provide the means to deploy data-driven strategies.
+
+%% What is our contribution
+The Amazon Online Marketplace is the largest and fastest growing 
+retailer marketplace, with more than 3 million retailers selling products on this platform \cite{}. 
+Amazon constantly ranks the sellers based on different attributes, 
+such as product price, customer satisfaction, amount of transactions completed, etc., and presents the best ranked seller/offer in the BuyBox. 
+Pricing is the the most influential factor short-term to rank at the top, but the other attributes describing the seller and the offer are also important (e.g., shipping time, 
+stock available).
+Existing repricing solutions use seller-provided rules for updating the product price when a repricing event is triggered 
+(e.g., update price by 1\% when a competitor changes the price of a product). 
+These fixed rules are set manually and changed infrequently based on a schedule decided by the seller.
+
+A Machine Learning solution for dynamic repricing can take full advantage of past 
+detailed historical data about competing offers and the outcome of auctions, and should remove the need 
+for slow to update and potentially non-optimal manual-rules.
+This can result in optimised pricing decisions for the sellers which should rank them top 
+on the sales platform consistently, therefore laying the foundation for increased sales and better competitiveness.
+%to existing customers and a strengthened value proposition to attract new customers.
+Additionally, the insights derived from analysing the historical data and the resulting predictive models should allow sellers 
+to adapt to ever changing market conditions beyond pricing. 
+%This will result in a deep understanding of parameters, which may result in introducing new parameters or adapting multiple parameters to gain the best result for the customers. 
+%This may also lead to additional consulting opportunities for XSellco.
+%Solution / Product
+%Briefly describe what the team hope to produce from the partnership.
+%This project aims to develop scalable Machine Learning methods that can automatically recommend appropriate product repricing, by taking into account historical and dynamic data describing the retailer, the product, the competitor products, demand, etc. A learning approach is needed to automatically infer patterns from dynamic and vast historical data, without the need for human-built rules that do not make the best use of the data available.
+%The learning model aims to be accurate and scalable, to be able to deal with millions of repricing events which are constantly changing. The predictive model also aims to be interpretable, so the insights learned from the model can be used by XSellco to offer additional consulting.
+%To start with, the project has historical data available from XSellco about thousands of retailers and products, as well as repricing event details from 2013 to today. This data will be used to build predictive models that describe the relationship between data and desired outcomes, such as winning the Amazon ?Buy Box? at the price that maximises profit for the retailer.
+
+In this work we have access to large amounts of auction data 
+for products sold over the course of 9 months on the Amazon Marketplace. 
+Our aim is to develop machine learning algorithms to predict the BuyBox winner, as well as study  
+dynamic repricing strategies for individual sellers.
+
+Our key contributions are as follows:
+\begin{itemize}
+\item \textbf{Data Preparation Techniques:} We present data pre-processing and preparation techniques suitable for product auction data collected from the Amazon Marketplace, with a view to 
+build effective BuyBox prediction algorithms. 
+\item	\textbf{BuyBox Predictor Algorithm:} We propose a machine learning algorithm that can be trained on historical product auction data from the Amazon Marketplace, 
+and can be used to predict the winner of a new auction on the Amazon Marketplace (i.e., BuyBox winner predictor). 
+Our algorithm is based on a RandomForest classifier that uses carefully engineered features.
+We also discuss the importance of different features for predicting the BuyBox.
+
+\item \textbf{Repricer Algorithm:} We implement and evaluate a dynamic repricing algorithm that can take in an auction for a given product and seller, 
+and recommend a repricing strategy to maximise the probability of winning the next auction for that seller and product.
+Our algorithm is based on the BuyBox predictor model and on a strategy for selecting candidate price points for recommendation.
+
+\item \textbf{Evaluation/Deployment:} All our algorithms are tested on research benchmarks and are deployed on commercial platforms.
+We discuss the results and what we learn from deploying our algorithms.
+\end{itemize}
+
+%-------------------------------------------------------------------------

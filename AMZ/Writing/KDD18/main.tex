@@ -1,0 +1,105 @@
+
+%%%%%%%%%%%%%%%%%%%%%%% file typeinst.tex %%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% This is the LaTeX source for the instructions to authors using
+% the LaTeX document class 'llncs.cls' for contributions to
+% the Lecture Notes in Computer Sciences series.
+% http://www.springer.com/lncs       Springer Heidelberg 2006/05/04
+%
+% It may be used as a template for your own input - copy it
+% to a new file with a new name and use it as the basis
+% for your article.
+%
+% NB: the document class 'llncs' has its own and detailed documentation, see
+% ftp://ftp.springer.de/data/pubftp/pub/tex/latex/llncs/latex2e/llncsdoc.pdf
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\documentclass[sigchi]{acmart}
+% Removes citation information below abstract
+\settopmatter{printacmref=false} 
+% removes footnote with conference information in first column
+\renewcommand\footnotetextcopyrightpermission[1]{} 
+\pagestyle{plain} % removes running headers
+
+%%%% PACKAGES
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{booktabs} % For formal tables
+\settopmatter{printacmref=false}
+\setcopyright{none}
+\usepackage{subcaption}
+%\usepackage{amssymb}
+%\setcounter{tocdepth}{3}
+%\usepackage{graphicx}
+%\usepackage{enumerate}
+%\usepackage{url}
+%\usepackage{comment}
+%\usepackage[draft]{todonotes} 
+%\usepackage{changes}
+
+\usepackage[T1]{fontenc}
+%Conference
+%% DOI
+%\acmDOI{10.475/123_4}
+%
+%% ISBN
+%\acmISBN{123-4567-24-567/08/06}
+%
+%%Conference
+%\acmConference[WOODSTOCK'97]{ACM Woodstock conference}{July 1997}{El
+%	Paso, Texas USA} 
+%\acmYear{1997}
+%\copyrightyear{2016}
+%
+%\acmPrice{15.00}
+%
+%\acmSubmissionID{123-A12-B3}
+
+
+\begin{document}
+
+%%% TITLE SECTION
+\title{Machine Learning Models for Dynamic Product Repricing on the Amazon Marketplace}
+\titlenote{This project has been funded by SFI award IP/2016/0436}
+\keywords{Dynamic Repricing, Amazon Marketplace, E-Commerce, BuyBox Prediction, Machine Learning}
+
+
+%%% AUTHOR SECTION
+\author{Thanh-Binh Le, Georgiana Ifrim}
+%\authornote{Insight Centre for Data Analytics, University College Dublin, Ireland}
+
+\affiliation{%
+	\institution{Insight Centre for Data Analytics, University College Dublin, Ireland}
+}\email{{thanh.binh, georgiana.ifrim}@insight-centre.org}
+
+\begin{abstract}	
+	
+	E-commerce has grown hugely and has opened opportunities for retailers big and small to sell their products on online shopping platforms such as the Amazon Marketplace. The Amazon platform hosts thousands of retailers and uses an algorithmic decision process called the BuyBox, to decide which product offer to show first in return to a user query.
+
+	Every time the price of a product changes, an auction among all the competing offers for that product takes place, and the BuyBox winner is re-assigned by Amazon. The BuyBox winner typically sells more products and achieves a higher revenue. The price of a product plays a large role, but it is not the only indicator of an offer winning the BuyBox. If we can understand and accurately approximate the BuyBox assignment algorithm, we can advise sellers about how to best customise their offers. We can also employ the same algorithm for dynamic repricing of products, to increase the likelihood of an offer winning the BuyBox, in the context of continuous change in competing offers.
+	
+	Most existing solutions for predicting the BuyBox and for product repricing are closed commercial solutions. In this study we analyse historical data describing thousands of Amazon BuyBox auctions  and build machine learning models that aim to approximate the Amazon algorithm for selecting winners. We also investigate approaches for algorithmic re-pricing based on (1) our BuyBox prediction algorithm and (2) efficient price point search strategies. Our evaluation shows that our learning models can accurately predict the BuyBox winner and can recommend effective repricing strategies.
+	%\keywords{Dynamic Repricing, Amazon Buybox, Business E-Commerce, Random Forest Classifier, Feature Impotance}
+ 
+	
+\end{abstract}
+
+\maketitle
+
+
+%%% MAIN SECTIONS
+\input{intro.tex}
+\input{relatedwork.tex}
+\input{background.tex}
+% \input{featureexpansion.tex}
+\input{buyboxprediction.tex}
+\input{repricer.tex}
+%\input{experiment.tex}
+\input{conclusion.tex}
+
+
+\bibliographystyle{acm} 
+\bibliography{main}
+
+\end{document}
