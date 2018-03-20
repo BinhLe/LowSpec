@@ -4,7 +4,7 @@
 % This is the LaTeX source for the instructions to authors using
 % the LaTeX document class 'llncs.cls' for contributions to
 % the Lecture Notes in Computer Sciences series.
-% http://www.springer.com/lncs       Springer Heidelberg 2006/05/04
+% c       Springer Heidelberg 2006/05/04
 %
 % It may be used as a template for your own input - copy it
 % to a new file with a new name and use it as the basis
@@ -15,19 +15,19 @@
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\documentclass[sigchi]{acmart}
+\documentclass[]{acmart}
 % Removes citation information below abstract
-\settopmatter{printacmref=false} 
+%\settopmatter{printacmref=true} 
 % removes footnote with conference information in first column
 \renewcommand\footnotetextcopyrightpermission[1]{} 
 \pagestyle{plain} % removes running headers
 
 %%%% PACKAGES
 \usepackage[T1]{fontenc}
-\usepackage{lmodern}
-\usepackage{booktabs} % For formal tables
-\settopmatter{printacmref=false}
-\setcopyright{none}
+%\usepackage{lmodern}
+%\usepackage{booktabs} % For formal tables
+%\settopmatter{printacmref=false}
+%\setcopyright{none}
 \usepackage{subcaption}
 %\usepackage{amssymb}
 %\setcounter{tocdepth}{3}
@@ -38,7 +38,7 @@
 %\usepackage[draft]{todonotes} 
 %\usepackage{changes}
 
-\usepackage[T1]{fontenc}
+%\usepackage[T1]{fontenc}
 %Conference
 %% DOI
 %\acmDOI{10.475/123_4}
@@ -68,6 +68,7 @@
 %%% AUTHOR SECTION
 \author{Thanh-Binh Le, Georgiana Ifrim}
 %\authornote{Insight Centre for Data Analytics, University College Dublin, Ireland}
+
 
 \affiliation{%
 	\institution{Insight Centre for Data Analytics, University College Dublin, Ireland}
@@ -99,7 +100,7 @@
 \input{conclusion.tex}
 
 
-\bibliographystyle{acm} 
+%\bibliographystyle{acm} 
 \bibliography{main}
 
 \end{document}

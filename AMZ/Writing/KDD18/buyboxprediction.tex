@@ -6,7 +6,7 @@ This section provides a machine learning algorithm that can be trained on histor
 \subsection{Business Understanding}
 \label{sec:bbbusiness}
 %% our target in increasing profit by placing offer into BuyBox
-Amazon hosts thousands of sellers on their marketplace. They use an algorithmic decision process to decide the winner of every auction. An auction as mentioned above is a set of merchants that compete to sell a product. Amazon selects a winner for the auction, and place that seller's product into the BuyBox. The BuyBox winner typically sells more products, and ideally achieves a higher profit margin. This means that the winner is highly competed by many retailers in auction.
+Amazon hosts thousands of  sellers on their marketplace. They use an algorithmic decision process to decide the winner of every auction. An auction as mentioned above is a set of merchants that compete to sell a product. Amazon selects a winner for the auction, and place that seller's product into the BuyBox. The BuyBox winner typically sells more products, and ideally achieves a higher profit margin. This means that the winner is highly competed by many retailers in auction.
 
 Motivated by that, our target is clearly declared as: can we use historical data about auctions and knowledge about the winners and losers, to learn the rules by which Amazon decides the winners? If we can approximate Amazon’s algorithm, we can advise sellers about the best strategy to use for winning the BuyBox. For example, we can recommend a new price for the product, or give advice about shipping time and user feedback profile to improve the offer and increase the chance of winning the BuyBox. 
 
@@ -30,7 +30,7 @@ the United States, Australia, Brazil, Canada, China, France, Germany, India, Ita
 
 3. \textbf{Auction layer}: In product's layer, the auction can be recorded when sellers update their product's offers. For example, one seller changes their shipping time from 0 hour to 24 hours, the new auction is saved as one XML file.
 
-4. \textbf{Offers layer}: There are many sellers give their offer for a product in marketplace. However, only the 20 lowest price offers are saved in XML when an auction is happened.
+4. \textbf{Offers layer}: There are many  sellers give their offer for a product in marketplace. However, only the 20 lowest price offers are saved in XML when an auction is happened.
 
 \subsection{Data Preparation}
 \label{sec:dataprepare}
@@ -50,22 +50,23 @@ The feature vector is described into four categories as follows :
 
 \textbf{3. Seller Feedback Information}: These features describe the detail of seller's feedback, including feedback's counts (\textit{SellerFeedbackCounts}) and feedback's rating (\textit{SellerFeedbackRating}). 
 
-\textbf{4. Seller and Product Details}: These features are the basic detail of sellers when they have a cooperate to Amazon. These features denote whether the seller is fulfilled by Amazon (\textit{IsFulfiledByAmazon}) or by merchant (\textit{IsFeaturedMerchant}). The last feature is the product's condition notes \textit{ConditionNotes} from sellers to their buyers.
+\textbf{4. Retailers' Details}: These features are the basic detail of  sellers when they have a cooperate to Amazon. These features denote whether the seller is fulfilled by Amazon (\textit{IsFulfiledByAmazon}) or by merchant (\textit{IsFeaturedMerchant}). The last feature is the product's condition notes \textit{ConditionNotes} from sellers to their buyers.
 
 \subsubsection{Data Analysis:}
 \label{sec:dataanalysis}
 
 %% talk a bit about the correlation between features in each market ==> need to prvide the solution 
 %% by each market
-After parsing data into CSV format, the features are analyzed to help us having a clear understanding. Our first concern is about whether we can use data from cross-market to learn model. By observation \textbf{Fig.\ref{fig:corr}}, it clearly gives us the answer that we should not train model with cross-market data. The correlations between features of two markets are really different, e.g. the possibility to be in BuyBox is higher if we have smaller shipping times in U.S. market, while it has not really strong correlation between those features in U.K. market. It means in U.K. shipping time is not the big anxiety for the buyers.  Hence, the separated treatment for each market is necessarily provided.
+After parsing data into CSV format, the features are analyzed to help us having a clear understanding. Our first concern is about whether we can use data from cross-market to learn model. By observation \textbf{Fig.\ref{fig:corr}}, it clearly shows that we should not train model with cross-market data. The correlations between features of two markets are really different, e.g. the possibility to be in BuyBox is higher if we have smaller shipping times in U.S. market, while it is not a really strong concerned effect in U.K. market. %In U.K. shipping time is not the big anxiety for the buyers. 
+Hence, the separated treatment for each marketplace is necessarily provided.
 
 \begin{figure}
-	\begin{subfigure}{0.5\textwidth}
+	\begin{subfigure}{0.45\textwidth}
 		\includegraphics[width=\linewidth]{fig_market_US_corr.png}
 		\caption{The U.S. \textit{"amazon.com"} market } \label{fig:corrus}
 	\end{subfigure}
-	\hspace*{\fill} % separation between the subfigures
-	\begin{subfigure}{0.5\textwidth}
+%	\hspace*{\fill} % separation between the subfigures
+	\begin{subfigure}{0.45\textwidth}
 		\includegraphics[width=\linewidth]{fig_market_UK_corr.png}
 		\caption{The U.K. \textit{"amazon.co.uk"} market} \label{fig:corrfr}
 	\end{subfigure}
@@ -101,13 +102,13 @@ In addition, we create some new features to enrich the information of an auction
 %	\caption{\label{fig:fi}An example of the Feature Importance, provided by Random Forest classifier.}
 %\end{figure}
 
-In order to check the new feature's capability to improve our prediction model performance, we add those features one after another and compare them with the F1-scores. which are provided by Random Forest Classifier. Fig.\ref{fig:addfeaures} illustrates that the performance becomes better when adding the extra information. This upgrading also points that the new features enrich the Amazon data and help to build a better model.
+In order to check the model's improvement capability for the new features, we add those features one after another and compare them with the F1-scores by using Random Forest Classifier. \textbf{Fig.\ref{fig:addfeaures}} illustrates that the prediction becomes better when adding the extra information. This upgrading also points that the new features can enrich the Amazon data and help to build a better hypothesis.
 
 
 \subsection{Machine Learning Model for Predicting BuyBox Winner}
 \label{sec:buyboxmodel}
 
-In here, we introduce the model construction with BuyBox Predictor. The goal of this algorithm is to predict the probability to win buy box. From parsed data, we use the Random Forest classifier to build the R.F. tree, which has information of who is winner and who can never win. The Fig.\ref{fig:buyboxflow} shows the flowchart of algorithm.
+In here, we introduce the model construction with BuyBox Predictor. The goal of this algorithm is to predict the probability to win buy box. From parsed data, we use the Random Forest classifier to build the R.F. tree, which has information of who is winner and who can never win. The \textbf{Fig.\ref{fig:buyboxflow}} shows the flowchart of BuyBox prediction algorithm.
 
 \begin{figure}[!h]
 	\begin{center}
@@ -116,3 +117,5 @@ In here, we introduce the model construction with BuyBox Predictor. The goal of 
 	\caption{\label{fig:buyboxflow}The flowchart of BuyBox model for winner prediction using feature importance to rank and select best features.}
 \end{figure}
 
+\subsection{Experiment for Predicting BuyBox Winner}
+\label{sec:expbuyboxmodel}
