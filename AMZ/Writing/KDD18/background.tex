@@ -1,13 +1,25 @@
 \section{Background}
 \label{sec:Background}
-In this section, the briefly introduction of Amazon Marketplace is first provided. Then, we focus on the data features on the market, that effect to algorithmic repricing, including the offers of third-party merchants, the BuyBox concept, and finally the scaled data, collected from the Amazon Web Services (AWS).
+In this section, we first briefly introduce the Amazon Marketplace. Then, we focus on the data features on the markets, that effect to algorithmic repricing, including the offers of 3P merchants, the BuyBox concept, and finally the scaled data, collected from the Amazon Web Services (AWS).
 
 \subsection{The Amazon Marketplace}
 \label{sec:amzintro}
 %% Talk a bit about Amazon online marketplace
-The Amazon Marketplace is one of the most well-known marketing channels for online retailers. It is an e-commerce platform, which enables  sellers to sell their products on its cloud markets. Started as a book seller but later Amazon (amazon.com) has expanded to sell varied categories of consumer items as well as its own electronic machinery. The Amazon has separate marketplaces for the United States, Australia, Brazil, Canada, China, France, Germany, India, Italy, Japan, Mexico, Netherlands, Spain, and the United Kingdom.
+The Amazon Marketplace is one of the most well-known marketing channels for online retailers. 
+It is an e-commerce platform, which enables  sellers to sell their products on its cloud markets. 
+Started as a book seller but later Amazon (amazon.com) has expanded to sell varied categories of consumer 
+items as well as its own electronic machinery. The Amazon has separate marketplaces for the United States, 
+Australia, Brazil, Canada, China, France, Germany, India, Italy, Japan, Mexico, Netherlands, Spain, and the United Kingdom.
 
-In 2015, Amazon surpassed Walmart to be the most valuable retailer in the United States \cite{kantor2015inside}. In 2017, it becomes one of the top 10 world's largest online marketplace with around 80 million worldwide members (refered to \textit{"Global Powers of Retailing 2017"} report {\footnote{\url{https://www2.deloitte.com/content/dam/Deloitte/global/Documents/consumer-industrial-products/gx-cip-2017-global-powers-of-retailing.pdf}}). In the same year, the using Amazon mobile application also reached the peak of 41.50\% to become the top most popular mobile shopping app in the United States, this is illustrated by \textbf{Fig.\ref{fig:statistic}} (refered to www.statista.com {\footnote{\url{https://www.statista.com/statistics/579505/most-popular-us-shopping-apps-ranked-by-reach/}}}). 
+In 2015, Amazon surpassed Walmart to be the most valuable retailer in the United States \cite{kantor2015inside}. 
+In 2017, it becomes one of the top 10 world's largest online marketplace with around 80 million worldwide members 
+(refered to \textit{"Global Powers of Retailing 2017"} report {\footnote{\url{https://www2.deloitte.com/
+content/dam/Deloitte/global/Documents/consumer-industrial-products/gx-cip-2017-global-powers-of-retailing.pdf}}). 
+In the same year, the using Amazon mobile application also reached the peak of 41.50\% to become the top most 
+popular mobile shopping app in the United States, this is illustrated by \textbf{Fig.\ref{fig:statistic}} 
+(refered to www.statista.com {\footnote{\url{https://www.statista.com/statistics/579505/most-popular-
+us-shopping-apps-ranked-by-reach/}}}). 
+
 \begin{figure}[!h]
 	\begin{center}
 		\scalebox{0.27}{\includegraphics{fig6_statisticAMZ.png}}
@@ -37,13 +49,23 @@ In 2015, Amazon surpassed Walmart to be the most valuable retailer in the United
 \subsection{The BuyBox}
 \label{sec:buybox}
 %% What is winner BuyBox?
-The Amazon BuyBox is definitely the most important element to sellers in Amazon Marketplace. It is the box from the right of the product page which contains the \textit{"Add to Basket"} or \textit{"Add to Cart"} button. \textbf{Fig.\ref{fig:buyboxexample}}, an example BuyBox, shows that winning the BuyBox is critical for generating sales. The BuyBox contains the price of the product, shipping information, the name of the seller, and a button to purchase the product. When customers click the button, they are buying the product from only one merchant who is the BuyBox winner. The winner gets more chance to sell their items by getting the prominent position in product's page , while the other competitors are relegated to the bottom section with a lower priority. Amazon themselves admit that around 82\% of purchases are made through the BuyBox \cite{taftamazon}. 
+The Amazon BuyBox is definitely the most important element to sellers in Amazon Marketplace. 
+It is the box from the right of the product page which contains the \textit{"Add to Basket"} 
+or \textit{"Add to Cart"} button. \textbf{Fig.\ref{fig:buyboxexample}}, an example BuyBox, 
+shows that winning the BuyBox is critical for generating sales. The BuyBox contains the price 
+of the product, shipping information, the name of the seller, and a button to purchase the product.
+ When customers click the button, they are buying the product from only one merchant who is the BuyBox 
+ winner. The winner gets more chance to sell their items by getting the prominent position in product's 
+ page , while the other competitors are relegated to the bottom section with a lower priority. Amazon 
+ themselves admit that around 82\% of purchases are made through the BuyBox \cite{taftamazon}. 
 
 \begin{figure}[!h]
 	\begin{center}
 		\scalebox{0.40}{\includegraphics{fig1_buybox.png}}
 	\end{center}
-	\caption{\label{fig:buyboxexample}In the Amazon's product page, the products of the BuyBox winner can be highlight effectively in the BuyBox (a), while the other competitors get lower positions (b).}
+	\caption{\label{fig:buyboxexample}In the Amazon's product page, the products of the BuyBox 
+		winner can be highlight effectively in the BuyBox (a), while the other competitors get lower 
+		positions (b).}
 \end{figure}
 
 
@@ -54,7 +76,7 @@ Amazon has a convoluted algorithm to determine which seller gets the prime locat
 
 \begin{figure}[!h]
 	\begin{center}
-		\scalebox{0.17}{\includegraphics{fig2_offers.JPG}}
+		\scalebox{0.25}{\includegraphics{fig2_offers.JPG}}
 	\end{center}
 	\caption{\label{fig:exampleoffer}An example of the offers for one product item on Amazon with many different competitors.}
 \end{figure}
@@ -78,9 +100,9 @@ which has four sellers, each in its own row. This observation contains 21 attrib
 
 \begin{figure}[!h]
 	\begin{center}
-		\scalebox{0.24}{\includegraphics{exampleCSV.png}}
+		\scalebox{0.5}{\includegraphics{exampleCSV.png}}
 	\end{center}
-	\caption{\label{fig:exampleCSV}An example of one competition with four sellers.}
+	\caption{\label{fig:exampleCSV}An example of Amazon's data with 7 samples.}
 \end{figure}
 
 \subsection{Competition Auction}

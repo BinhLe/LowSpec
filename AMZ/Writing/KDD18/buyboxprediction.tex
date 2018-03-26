@@ -1,7 +1,7 @@
 \section{BuyBox Prediction}
 \label{sec:buybox}
 % This is the brief introduction of our goal in this section
-This section provides a machine learning algorithm that can be trained on historical data from the Amazon, to predict the winner of an auction on the marketplace. This algorithm can take as input any dataset describing the offers made by sellers for a set of products, for a specific market (e.g., US, UK, France) or across markets. It then trains for each marketplace a machine learning model, which can predict the offer that will win the auction (BuyBox). The algorithm also outputs a ranked list of the feature importance discovered from the training data. For example, the algorithm can discover data-specific feature importance for each input dataset. This means that the algorithm can be targeted to the data of a single seller or a specific product, and it delivers a list of feature importance for that custom data. So besides predicting the auction winner, the algorithm can be used to advise sellers on how best to update their offer profiles to increase their chance of winning the BuyBox.
+This section provides a machine learning algorithm which can take as input any dataset describing the offers made by sellers for a set of products, for a specific market (e.g., US, UK, France) or across markets. It then trains a machine learning model that, when presented with an auction, it can predict the offer that will win the auction (BuyBox). The algorithm also outputs a ranked list of the feature importance discovered from the training data. For example, the algorithm can discover data-specific feature importance for each input dataset. This means that the algorithm can be targeted to the data of a single seller or a specific product, and it delivers a list of feature importance for that custom data. So besides predicting the auction winner, the algorithm can be used to advise sellers on how best to update their offer profiles to increase their chance of winning the BuyBox.
 
 \subsection{Business Understanding}
 \label{sec:bbbusiness}
@@ -119,3 +119,43 @@ In here, we introduce the model construction with BuyBox Predictor. The goal of 
 
 \subsection{Experiment for Predicting BuyBox Winner}
 \label{sec:expbuyboxmodel}
+
+
+
+\begin{center}
+	\begin{table}[htb]
+		\label{exp:prediction}
+		\begin{tabular}{ |c|c|c|c|c|c|c|c|c|c|c|c|c|c| } 
+	
+	
+			\specialrule{.2em}{.1em}{.1em} 
+			\multirow{2}{*}{Markets (Sample size)} & \multirow{2}{*}{Class}  & \multicolumn{2}{c|}{R.Forest} & \multicolumn{2}{c|}{L.Regression } & \multicolumn{2}{c|}{3-NN}&  \multicolumn{2}{c|}{AdaBoost} & \multicolumn{2}{c|}{SVM-RBF} & \multicolumn{2}{c|}{XGBoost} \\ \cline{3-14}
+			
+			& &	 mean &	std	 & mean & std & mean &std & mean & std & mean & std	& mean & std \\ 
+			\specialrule{.1em}{.05em}{.05em} 
+			\multirow{2}{*}{France (475,612)}	&  -1 &1.000 &0.000 &0.990	&0.000 &0.990 &0.000 &0.990 &0.000 &0.990 &0.000 &0.990 &0.000 \\ 
+												&	1 &0.960 &0.004	&0.800	&0.000 &0.860 &0.015 &0.870	&0.005 &0.830 &0.011 &0.900	&0.000 \\ 
+			\hline
+			\multirow{2}{*}{UK (86)}	&-1	&0.980	&0.019	&0.935	&0.013	&0.950	&0.011	&0.905	&0.011	&0.915	&0.031	&0.980	&0.012 \\ 
+										&1	&0.970	&0.022	&0.915	&0.019	&0.940	&0.011	&0.880	&0.014	&0.895	&0.045	&0.970	&0.018 \\ 
+			\hline
+			\multirow{2}{*}{Germany (113)}  &-1	&0.930	&0.023	&0.940	&0.014	&0.945	&0.024	&0.940	&0.012	&0.930	&0.016	&0.940	&0.012 \\ 
+											&1	&0.895	&0.027	&0.910	&0.021	&0.915	&0.031	&0.915	&0.017	&0.905	&0.020	&0.905	&0.017 \\ 
+			\hline
+			\multirow{2}{*}{Spain (150)}	&-1	&0.955	&0.028	&0.840	&0.004	&0.925	&0.041	&0.795	&0.021	&0.825	&0.020	&0.960	&0.023 \\ 
+											&1	&0.925	&0.037	&0.735	&0.024	&0.890	&0.054	&0.665	&0.025	&0.715	&0.050	&0.935	&0.040 \\ 
+			\hline
+			\multirow{2}{*}{India (36)}	&-1	&1.000	&0.000	&1.000	&0.000	&1.000	&0.000	&1.000	&0.000	&1.000	&0.000	&1.000	&0.000 \\ 
+										&1	&1.000	&0.000	&1.000	&0.000	&1.000	&0.000	&1.000	&0.000	&1.000	&0.000	&1.000	&0.000 \\ 
+			\hline
+			\multirow{2}{*}{Italy (12,506)}	&-1	&0.990	&0.000	&0.960	&0.005	&0.970	&0.005	&0.980	&0.000	&0.970	&0.000	&0.990	&0.004 \\ 
+											&1	&0.960	&0.007	&0.830	&0.018	&0.850	&0.013	&0.890	&0.004	&0.850	&0.005	&0.930	&0.007 \\ 
+			\hline
+			\multirow{2}{*}{US (3,200)}	&-1	&0.950	&0.005	&0.940	&0.007	&0.940	&0.005	&0.940	&0.004	&0.940	&0.005	&0.950	&0.007 \\ 
+										&1	&0.910	&0.010	&0.880	&0.009	&0.890	&0.008	&0.885	&0.007	&0.885	&0.010	&0.900	&0.011 \\ 
+			\specialrule{.2em}{.1em}{.1em} 	
+	
+		\end{tabular}
+	\caption{The comparison between 6 classification algorithms for BuyBox prediction through 7 markets.}
+	\end{table}
+\end{center}
