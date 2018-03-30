@@ -1,0 +1,255 @@
+%!TEX root = report.tex
+\chapter{BuyBox Prediction}
+\label{sec:buybox}
+% This is the brief introduction of our goal in this section
+This section provides a machine learning algorithm which can take as input any dataset describing the 
+offers made by sellers for a set of products, for a specific market (e.g., US, UK, France). 
+It then trains a machine learning model that, when presented with an auction, it can predict the offer that 
+will win the auction (BuyBox). The algorithm also outputs a ranked list of the feature importance discovered 
+from the training data. For example, the algorithm can discover data-specific feature importance for each input dataset. 
+This means that the algorithm can be targeted to the data of a single seller or product, and it delivers a list of feature importance 
+for that customized data. So besides predicting the auction winner, the algorithm can be used to advise sellers on how best to update 
+their offer profiles to increase their chance of winning the BuyBox.
+
+\section{Business Understanding}
+\label{sec:bbbusiness}
+%% our target in increasing profit by placing offer into BuyBox
+Amazon hosts thousands of  sellers on their marketplace. They use an algorithmic decision process to decide the winner of every auction. 
+An auction as mentioned above is a set of merchants that compete to sell a product. Amazon selects a winner for the auction, and place that 
+seller's product into the BuyBox. The BuyBox winner typically sells more products, and ideally achieves a higher profit margin. 
+This means that the winner is highly competed by many retailers in auction.
+
+Motivated by that, our target is clearly declared as: can we use historical data about auctions and knowledge about the winners and losers, to learn the rules by which Amazon decides the winners? 
+If we can approximate Amazon’s algorithm, we can advise sellers about the best strategy to use for winning the BuyBox. 
+For example, we can recommend a new price for the product, or give advice about shipping time and user feedback profile to improve the offer and increase the chance of winning the BuyBox. 
+
+\section{Data Understanding}
+\label{sec:datafirstlook}
+% Scale of amazon data
+As mentioned above, every changing for a seller's offer will provide an auction, in Amazon's cloud service. 
+It includes aggregated information about the 20 lowest prices offered for a product (or less, if there are less than 20 sellers). 
+Each auction is represented as a XML, the total size of raw-data folder, which is a cross-market database, is about 100.000 files. 
+
+\begin{figure}[!h]
+	\begin{center}
+		\scalebox{0.5}{\includegraphics{fig3_scale.png}}
+	\end{center}
+	\caption{\label{fig:scale}The scales of data in one Marketplace.}
+\end{figure}
+
+Illustrating from \textbf{Fig.\ref{fig:scale}},which is the scaling scheme of data in one market, there are four basic layer for the Amazon data:
+
+1. \textbf{Marketplace layer}: The Amazon has many marketplaces for
+the United States, Australia, Brazil, Canada, China, France, Germany, India, Italy, Japan, Mexico, Netherlands, Spain, and the United Kingdom. One marketplace is an separated  environment with its own characteristics.  e.g. in India market, there is one seller who wins almost product's competing, while in U.S. market, the auction is normally with two or three competitors.
+
+2. \textbf{Product layer}: From the market place, sellers can sell many products. It could be very different in price, shipping time, conditional note for two different products. The category list of product can be found in the Amazon Web Service.
+
+3. \textbf{Auction layer}: In product's layer, the auction can be recorded when sellers update their product's offers. For example, one seller changes their shipping time from 0 hour to 24 hours, the new auction is saved as one XML file.
+
+4. \textbf{Offers layer}: There are many  sellers give their offer for a product in marketplace. However, only the 20 lowest price offers are saved in XML when an auction is happened.
+
+
+\textbf{Fig.\ref{fig:exampleCSV}} illustrates small vision of one CSV file
+which has four sellers, each in its own row. Observing from this figure, there are some very important features such as \textit{IsBuyBoxWinner, ListingPrice, ShippingPrice, ShippingTime\_maxHours, ShippingTime\_minHours, IsFulfilledByAmazon}, ... 
+%In order to reduce the space, the description of features are skipped here. However, they can be briefly found in \textbf{Chapter \ref{sec:datafirstlook}}.
+
+\begin{figure}[!h]
+	\begin{center}
+		\scalebox{0.5}{\includegraphics{exampleCSV.png}}
+	\end{center}
+	\caption{\label{fig:exampleCSV}An example of Amazon's data with 7 samples.}
+\end{figure}
+
+\section{Data Preparation}
+\label{sec:dataprepare}
+
+\subsection{Raw Data}
+\label{sec:datacsv}
+%% Features list and description
+To facilitate the analysis, we model the BuyBox as a prediction problem. Specifically, for a product offered by $n$ sellers, each of which is characterized by 
+a feature vector, our goal is to predict which seller will be chosen to get in the BuyBox. 
+
+First step is to parse the XML raw data files into a single CSV dataset that can be use for further analysis. 
+In order to do this, the parsing function is provided to read every single offer in a XML and transform it into a row in CSV file. Each child-tag under the tag <{\textbf{Offer}}> in the XML file 
+is converted as a feature in dataset. Finally, the target class feature is parsed through the tag with name <\textbf{IsBuyBoxWinner}> (which is 1 if the offer wins BuyBox, -1 otherwise). 
+% All the offers under the tag \textbf{<Offers>} become rows in the CSV file. 
+Since each XML file has up to 20 offers, this means that for each auction we generate up to 20 rows in the CSV file.
+% Each <\textit{Offer}> tag becomes a row in the CSV file, and each tag or subtag, becomes a column name. 
+%We give the details as below for the number of rows and columns generated by parsing over 100k XML files.
+
+The feature vector is described into four categories as follows :
+
+\textbf{A. Prices}: The price's features are related to the price of products, which customers have to pay for buying a product. They are the \textit{ListingPrice} and \textit{ShippingPrice}. In addition, the new feature \textit{LanddedPrice} = \textit{ListingPrice} + \textit{ShippingPrice} is also calculated.
+
+\textbf{B. Shipping Time Informations}: These are the shipping details for one seller's product, including the \textit{ShippingTime\_minHours}, \textit{ShippingTime\_maxHours} for delivery. 
+
+\textbf{C. Seller Feedback Information}: These features describe the detail of seller's feedback, including feedback's counts (\textit{SellerFeedbackCounts}) and feedback's rating (\textit{SellerFeedbackRating}). 
+
+\textbf{D. Retailers' Details}: These features are the basic detail of  sellers when they have a cooperate to Amazon. These features denote whether the seller is fulfilled by Amazon (\textit{IsFulfiledByAmazon}) or by merchant (\textit{IsFeaturedMerchant}). The last feature is the product's condition notes \textit{ConditionNotes} from sellers to their buyers.
+
+\subsection{Data Analysis}
+\label{sec:dataanalysis}
+
+%% talk a bit about the correlation between features in each market ==> need to prvide the solution 
+%% by each market
+After parsing data into CSV format, the features are analyzed to help us having a clear understanding. Our first concern is about whether we can use data from cross-market to learn model. 
+By observation \textbf{Fig.\ref{fig:corr}}, it clearly shows that we should not train model with cross-market data. 
+The correlations between features of two markets are really different, e.g. the possibility to be in BuyBox is higher if we have smaller shipping times
+ in U.S. market, while it is not a really strong concerned effect in U.K. market. %In U.K. shipping time is not the big anxiety for the buyers. 
+Hence, the separated treatment for each marketplace is necessarily provided here.
+
+\begin{figure}
+	\begin{subfigure}{0.45\textwidth}
+		\includegraphics[width=\linewidth]{fig_market_US_corr.png}
+		\caption{The U.S. \textit{"amazon.com"} market } \label{fig:corrus}
+	\end{subfigure}
+%	\hspace*{\fill} % separation between the subfigures
+	\begin{subfigure}{0.45\textwidth}
+		\includegraphics[width=\linewidth]{fig_market_UK_corr.png}
+		\caption{The U.K. \textit{"amazon.co.uk"} market} \label{fig:corrfr}
+	\end{subfigure}
+	\caption{The correlation between features in (a) U.S. market and (b) U.K. market.} \label{fig:corr}
+\end{figure}
+
+In addition, we create some new columns to enrich the information of an auction. These features are described as follows:
+
+\textbf{1. Difference to Minimum Price in Auction}: (\textit{DifftoMinLandedPriceCompetition})This is the difference from current LandedPrice to the minimum landed price in that auction.
+
+\textbf{2. Difference to the Minimum Price of Product}: (\textit{DifftoMinLandedPriceProduct}) This is the difference from current LandedPrice to the minimum landed price, grouped by product.
+
+\textbf{3. Difference to the Amazon Seller's Price}: (\textit{DifftoAmzLandedPriceCompetition}) We capture who is the Amazon Seller in the auction. Then, we calculate the difference from current LandedPrice to the Amazon Price. If there is not Amazon Seller in the auction, we use the difference to minimum price in the auction instead.
+
+\textbf{4. Difference to the Ideal Point in Auction}: (\textit{IdealPointCompetition}) The ideal point is the combination between the best (i.e., minimum) LandedPrice and the best (i.e., minimum) ShippingTime\_maxHours, across all offers, in each auction. This feature captures the difference from this ideal point, for each offer in the auction.
+\begin{figure}[!h]
+	\begin{center}
+		\scalebox{0.28}{\includegraphics{fig_addFeatures.png}}
+	\end{center}
+	\caption{\label{fig:addfeaures}A comparison of F1-score when predicting winner BuyBox for 7 marketplaces. The scores are provided by Random Forest classifier.}
+\end{figure}
+
+%\subsubsection{Feature Selection:}
+%\label{sec:featsel}
+%%% This will talk about the feature importance?
+%According to Amazon's documentation, as well as speculation from sellers, other
+%features are possibly used by the Buy Box algorithm. 
+%
+%\begin{figure}[!h]
+%	\begin{center}
+%		\scalebox{0.27}{\includegraphics{fig7_fi.png}}
+%	\end{center}
+%	\caption{\label{fig:fi}An example of the Feature Importance, provided by Random Forest classifier.}
+%\end{figure}
+
+In order to check the model's improvement capability for the new features, we add those columns one after another and compare them by using F1-scores of Random Forest Classifier. \textbf{Fig.\ref{fig:addfeaures}} illustrates that the prediction becomes significantly better when adding the extra information. 
+This upgrading also points that the new features can enrich the Amazon data and help to build a better hypothesis.
+
+\section{Machine Learning Model for Predicting BuyBox Winner}
+\label{sec:buyboxmodel}
+
+In this section, we introduce the model construction with BuyBox predictor. The goal of this algorithm is to predict 
+the probability to win BuyBox. Firstly, the XMLs are converted into one single featured CSV data, based on the feature importance analysis.
+After parsing, we learn a machine learning model, which can help user to estimate the BuyBox winning probability. 
+The \textbf{Fig.\ref{fig:buyboxflow}} shows the flowchart of BuyBox prediction algorithm.
+
+\begin{figure}[!h]
+	\begin{center}
+		\scalebox{0.70}{\includegraphics{fig4_buybox.png}}
+	\end{center}
+	\caption{\label{fig:buyboxflow}The flowchart of BuyBox model for winner prediction using feature importance to rank and select best features.}
+\end{figure}
+
+From the flowchart, it obviously shows that the BuyBox model is constructed by using the past selling behavior of customer's data. Hence, if the past data is out-of-date, the model is not appropriate anymore.
+In order to make the model more accurate and adapted to the current time of business, the model should be retrained based on the updated featured data.
+
+\section{Experiment for Predicting BuyBox Winner}
+\label{sec:expbuyboxmodel}
+
+\subsection{Comparison between Classification Models}
+\label{sec:comparemodels}
+
+\begin{center}
+	\begin{table}[htb]
+		\label{exp:prediction}
+		\centering
+		\resizebox{\columnwidth}{!}{%
+		\begin{tabular}{ |c|c|c|c|c|c|c|c|c|c|c|c|c|c| } 
+	
+	
+			\specialrule{.2em}{.1em}{.1em} 
+			Markets  & \multirow{2}{*}{Class}  & \multicolumn{2}{c|}{R.Forest} & \multicolumn{2}{c|}{L.Regression } & \multicolumn{2}{c|}{3-NN}&  \multicolumn{2}{c|}{AdaBoost} & \multicolumn{2}{c|}{SVM-RBF} & \multicolumn{2}{c|}{XGBoost} \\ \cline{3-14}
+			
+			(Sample size) & &	 mean &	std	 & mean & std & mean &std & mean & std & mean & std	& mean & std \\ 
+			\specialrule{.1em}{.05em}{.05em} 
+										France 	&  -1 &1.000 &0.000 &0.990	&0.000 &0.990 &0.000 &0.990 &0.000 &0.990 &0.000 &0.990 &0.000 \\ 
+									  (475,612)&	1 &0.960 &0.004	&0.800	&0.000 &0.860 &0.015 &0.870	&0.005 &0.830 &0.011 &0.900	&0.000 \\ 
+			\hline
+						UK 		     &-1	&0.980	&0.019	&0.935	&0.013	&0.950	&0.011	&0.905	&0.011	&0.915	&0.031	&0.980	&0.012 \\ 
+								(86)&1	&0.970	&0.022	&0.915	&0.019	&0.940	&0.011	&0.880	&0.014	&0.895	&0.045	&0.970	&0.018 \\ 
+			\hline
+			Germany   				&-1	&0.930	&0.023	&0.940	&0.014	&0.945	&0.024	&0.940	&0.012	&0.930	&0.016	&0.940	&0.012 \\ 
+							(113)		&1	&0.895	&0.027	&0.910	&0.021	&0.915	&0.031	&0.915	&0.017	&0.905	&0.020	&0.905	&0.017 \\ 
+			\hline
+			Spain 	&-1	&0.955	&0.028	&0.840	&0.004	&0.925	&0.041	&0.795	&0.021	&0.825	&0.020	&0.960	&0.023 \\ 
+			(150)								&1	&0.925	&0.037	&0.735	&0.024	&0.890	&0.054	&0.665	&0.025	&0.715	&0.050	&0.935	&0.040 \\ 
+			\hline
+			India 	&-1	&1.000	&0.000	&1.000	&0.000	&1.000	&0.000	&1.000	&0.000	&1.000	&0.000	&1.000	&0.000 \\ 
+					(36)					&1	&1.000	&0.000	&1.000	&0.000	&1.000	&0.000	&1.000	&0.000	&1.000	&0.000	&1.000	&0.000 \\ 
+			\hline
+			Italy 	&-1	&0.990	&0.000	&0.960	&0.005	&0.970	&0.005	&0.980	&0.000	&0.970	&0.000	&0.990	&0.004 \\ 
+					(12,506)						&1	&0.960	&0.007	&0.830	&0.018	&0.850	&0.013	&0.890	&0.004	&0.850	&0.005	&0.930	&0.007 \\ 
+			\hline
+			US	&-1	&0.950	&0.005	&0.940	&0.007	&0.940	&0.005	&0.940	&0.004	&0.940	&0.005	&0.950	&0.007 \\ 
+					 (3,200)					&1	&0.910	&0.010	&0.880	&0.009	&0.890	&0.008	&0.885	&0.007	&0.885	&0.010	&0.900	&0.011 \\ 
+			\specialrule{.2em}{.1em}{.1em} 	
+	
+		\end{tabular}
+	}
+	\caption{The comparison between 6 classification algorithms for BuyBox prediction through 7 markets.}
+	\end{table}
+\end{center}
+
+
+\subsection{The Influence of Data Amount to Model}
+\label{sec:dataamount}
+
+
+\begin{center}
+	\begin{table}[htb]
+		\label{exp:prediction}
+		\centering
+		%\resizebox{\columnwidth}{!}{%
+			\begin{tabular}{ |c|c|c|c|c|c|c|c|c|c|c| } 
+				
+				
+				\specialrule{.2em}{.1em}{.1em}		
+				\multirow{2}{*}{Markets}  & \multirow{2}{*}{Class}	& \multicolumn{9}{c|}{The Increment of Data Size}	\\	\cline{3-11}																						
+				  		& 			&	10\%	&	20\%	&	30\%	&	40\%	&	50\%	&	60\%	&	70\%	&	80\%	&	90\%	\\
+				\specialrule{.1em}{.05em}{.05em} 																				
+				\multirow{2}{*}{France}& 	-1	&	0.99	&	0.99	&	0.99	&	0.99	&	0.99	&	1.00	&	1.00	&	1.00	&	1.00	\\
+				& 1	&	0.82	&	0.83	&	0.86	&	0.88	&	0.91	&	0.92	&	0.94	&	0.95	&	0.94	\\
+				\hline																				
+				\multirow{2}{*}{UK}& 	-1	&	0.97	&	0.96	&	0.96	&	0.96	&	0.95	&	0.96	&	0.96	&	0.95	&	0.96	\\
+				& 1	&	0.96	&	0.94	&	0.94	&	0.94	&	0.92	&	0.94	&	0.94	&	0.93	&	0.95	\\
+				\hline																				
+				\multirow{2}{*}{Germany}& 	-1	&	0.91	&	0.92	&	0.95	&	0.92	&	0.92	&	0.93	&	0.93	&	0.93	&	0.93	\\
+				& 1	&	0.88	&	0.89	&	0.93	&	0.89	&	0.89	&	0.91	&	0.91	&	0.91	&	0.9	\\
+				\hline																				
+				\multirow{2}{*}{Spain}& 	-1	&	0.94	&	0.89	&	0.94	&	0.96	&	0.95	&	0.96	&	0.96	&	0.96	&	0.96	\\
+				& 1	&	0.9	&	0.83	&	0.9	&	0.93	&	0.92	&	0.93	&	0.93	&	0.94	&	0.94	\\
+				\hline																				
+				\multirow{2}{*}{India}& 	-1	&	1.00	&	1.00	&	1.00	&	1.00	&	1.00	&	1.00	&	1.00	&	1.00	&	1.00	\\
+				& 1	&	1.00	&	1.00	&	1.00	&	1.00	&	1.00	&	1.00	&	1.00	&	1.00	&	1.00	\\
+				\hline																				
+				\multirow{2}{*}{Italy}& 	-1	&	0.98	&	0.98	&	0.99	&	0.99	&	0.99	&	0.99	&	0.99	&	0.99	&	0.99	\\
+				& 1	&	0.9	&	0.91	&	0.94	&	0.94	&	0.95	&	0.96	&	0.95	&	0.96	&	0.96	\\
+				\hline																				
+				\multirow{2}{*}{US}& 	-1	&	0.94	&	0.94	&	0.94	&	0.95	&	0.95	&	0.94	&	0.95	&	0.95	&	0.95	\\
+				& 1	&	0.88	&	0.89	&	0.89	&	0.90	&	0.90	&	0.89	&	0.90	&	0.90	&	0.90	\\
+				\specialrule{.2em}{.1em}{.1em}																				
+				 	
+				
+			\end{tabular}
+		%}
+		\caption{The xxxx .}
+	\end{table}
+\end{center}

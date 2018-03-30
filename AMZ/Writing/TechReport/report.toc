@@ -1,0 +1,21 @@
+\select@language {english}
+\contentsline {chapter}{\numberline {1}Introduction}{2}
+\contentsline {section}{\numberline {1.1}Dynamic Repricing}{2}
+\contentsline {section}{\numberline {1.2}Dynamic Product Repricing on the Amazon Marketplace}{3}
+\contentsline {chapter}{\numberline {2}BuyBox Prediction}{5}
+\contentsline {section}{\numberline {2.1}Business Understanding}{5}
+\contentsline {section}{\numberline {2.2}Data Understanding}{6}
+\contentsline {section}{\numberline {2.3}Data Preparation}{7}
+\contentsline {subsection}{\numberline {2.3.1}Raw Data}{7}
+\contentsline {subsection}{\numberline {2.3.2}Data Analysis}{8}
+\contentsline {section}{\numberline {2.4}Machine Learning Model for Predicting BuyBox Winner}{9}
+\contentsline {section}{\numberline {2.5}Experiment for Predicting BuyBox Winner}{10}
+\contentsline {subsection}{\numberline {2.5.1}Comparison between Classification Models}{10}
+\contentsline {subsection}{\numberline {2.5.2}The Influence of Data Amount to Model}{11}
+\contentsline {chapter}{\numberline {3}Repricer Algorithm}{12}
+\contentsline {section}{\numberline {3.1}Problem Understading}{12}
+\contentsline {section}{\numberline {3.2}Spliting the Price's Bins}{12}
+\contentsline {section}{\numberline {3.3}Finding Recommendation Score}{13}
+\contentsline {section}{\numberline {3.4}Proposed Algorithm for Repricer}{13}
+\contentsline {section}{\numberline {3.5}Experiment for Repricing}{13}
+\contentsline {chapter}{\numberline {4}Conclusion}{15}
